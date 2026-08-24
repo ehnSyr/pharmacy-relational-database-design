@@ -1,0 +1,124 @@
+%% Logical data model — Pharmacy Operations Database
+%% Rendered inline in README.md. Paste into https://mermaid.live to edit.
+erDiagram
+    patients ||--o{ patient_address_lookup : "lives at"
+    patient_address ||--o{ patient_address_lookup : "is home to"
+    patients ||--o{ patient_insurance_lookup : "is covered by"
+    insurance ||--o{ patient_insurance_lookup : "covers"
+    insurance_type ||--o{ insurance : classifies
+    insurance ||--o{ coverage_amounts : "sets rate for"
+    drugs ||--o{ coverage_amounts : "is priced in"
+    patients ||--o{ orders : places
+    pharmacies ||--o{ orders : fills
+    orders ||--o{ order_item_details : "contains"
+    drugs ||--o{ order_item_details : "is dispensed as"
+    insurance ||--o{ order_item_details : "applies to"
+    pharmacies ||--o{ inventory : stocks
+    drugs ||--o{ inventory : "is stocked as"
+    pharmacies ||--o{ pharmacy_address_lookup : "located at"
+    pharmacy_address ||--o{ pharmacy_address_lookup : "is site of"
+    state_lookup ||--o{ patient_address : "is state of"
+    state_lookup ||--o{ pharmacy_address : "is state of"
+
+    patients {
+        int patient_id PK
+        varchar patient_first_name
+        varchar patient_last_name
+        date patient_dob
+        varchar patient_email
+        varchar patient_phone_number
+        varchar patient_ssn UK
+    }
+    patient_address {
+        int address_pt_id PK
+        varchar address_primary_street
+        varchar address_secondary_street
+        varchar address_city
+        int address_state_id FK
+        varchar address_zipcode
+    }
+    patient_address_lookup {
+        int patient_id PK_FK
+        int address_pt_id PK_FK
+    }
+    pharmacies {
+        int pharmacy_id PK
+        varchar pharmacy_name
+        int pharmacy_location_number
+    }
+    pharmacy_address {
+        int address_ph_id PK
+        varchar address_primary_street
+        varchar address_secondary_street
+        varchar address_city
+        int address_state_id FK
+        varchar address_zipcode
+    }
+    pharmacy_address_lookup {
+        int pharmacy_id PK
+        int address_ph_id PK
+    }
+    insurance {
+        int insurance_id PK
+        varchar insurance_name UK
+        int insurance_type_id FK
+        money insurance_copay
+        money insurance_coverage_amount
+        varchar insurance_prescription_code
+    }
+    insurance_type {
+        int insurance_type_id PK
+        varchar insurance_type_code
+        varchar insurance_type_description
+    }
+    patient_insurance_lookup {
+        int patient_id PK_FK
+        int insurance_id PK_FK
+    }
+    coverage_amounts {
+        int coverage_amounts_id PK
+        money coverage_amount
+        int coverage_amounts_drug_id FK
+        int coverage_amount_insurance_id FK
+    }
+    drugs {
+        int drug_id PK
+        varchar drug_name
+        int drug_code UK
+        varchar drug_type
+        int drug_dosage_qty
+        varchar drug_dosage_uom
+        int drug_pack_qty
+        int drug_generic_indicator
+        int drug_otc_indicator
+        money drug_price
+        varchar drug_primary_use
+    }
+    inventory {
+        int inventory_id PK
+        int inventory_qty
+        int inventory_pharmacy_id FK
+        int inventory_drug_id FK
+    }
+    orders {
+        int order_id PK
+        date order_date_filled
+        int order_item_quantity
+        int order_patient_id FK
+        int order_pharmacy_id FK
+    }
+    order_item_details {
+        int order_item_id PK
+        varchar order_item_number
+        int order_item_code
+        int order_item_quantity
+        money order_item_cost
+        int order_item_order_id FK
+        int order_item_insurace_id FK
+        int order_item_drug_id FK
+    }
+    state_lookup {
+        int state_id PK
+        varchar state_code
+        varchar state_name UK
+    }
