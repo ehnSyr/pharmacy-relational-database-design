@@ -24,7 +24,7 @@ Out of scope: non-drug store inventory, vendor invoicing, and employee managemen
 
 ## My Role
 
-Project Manager for a four-person team. I owned the project charter and scope definition, ran the team's work log and delivery schedule, and contributed to the conceptual and logical modeling sessions that produced the schema below.
+Project Manager for a four-person team. I owned the project charter and scope definition, ran the team's work log and delivery schedule, and contributed to the conceptual and logical modeling sessions that produced the schema below. I built the Power BI relational model and front end UX experience including DAX metrics.
 
 ## Data Model
 
